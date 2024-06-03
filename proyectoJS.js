@@ -2,7 +2,7 @@ function compararNumero (numero){
     return numAleatorio == numero
 }
 
-let numAleatorio = Math.floor(Math.random() * 9);
+let numAleatorio;
 // primero generamos un numero aleatorio entre 0 y 9
 console.log (numAleatorio);
 alert("Adivina adivinador, ¿Cuánta suerte tendrás hoy?");
@@ -11,9 +11,10 @@ let nombreJugador = prompt("Ingrese su nombre:");
 alert ("Bienvenido/a " + nombreJugador + ", su objetivo es adivinar el numero entre 0 y 9 en el que estoy pensando, tienes 3 intentos.")
 
 let seguirJugando = "S";
-let numJugador
+let numJugador;
 
 while (seguirJugando == "S"){
+    numAleatorio = Math.floor(Math.random() * 9);
     for (let i=0; i<3; i=i+1){
         alert ("Intento numero: "+(i+1));
         numJugador = prompt("Ingrese un numero entero entre 0 y 9 inclusive:");
