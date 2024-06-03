@@ -26,7 +26,7 @@ while (seguirJugando == "S"){
             }else if (i<2){
                 alert ("Numero incorrecto, intenta nuevamente.");
             }else {
-                alert ("Numero incorrecto, no tienes mas intentos.");
+                alert ("Numero incorrecto, no tienes mas intentos. Estaba pensando en el numero "+numAleatorio);
             }
         }else {
             alert ("El valor ingresado es incorrecto")
