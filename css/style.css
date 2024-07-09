@@ -1,0 +1,81 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: 0; }
+
+body {
+    font-family: "Jockey One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    background-color: rgb(191, 230, 243);
+}
+
+.cuerpoJuego{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.botones{
+    padding-top: 20px;
+    display: grid;
+    grid-template-rows: 50px 50px 50px;
+    grid-template-columns: 50px 50px 50px;
+    grid-template-areas:
+    "area1 area2 area3"
+    "area4 area5 area6"
+    "area7 area8 area9"
+}
+
+.grid-item1{
+    grid-area: area1;
+}
+
+.grid-item2{
+    grid-area: area2;
+}
+
+.grid-item3{
+    grid-area: area3;
+}
+
+.grid-item4{
+    grid-area: area4;
+}
+
+.grid-item5{
+    grid-area: area5;
+}
+
+.grid-item6{
+    grid-area: area6;
+}
+
+.grid-item7{
+    grid-area: area7;
+}
+
+.grid-item8{
+    grid-area: area8;
+}
+
+.grid-item9{
+    grid-area: area9;
+}
+
+.tablaPuntaje{
+    padding-top: 20px;
+    width: 30%;
+}
+
+h1{
+    padding-top: 20px;
+}
+
+td{
+    text-align: center;
+}
+
+h2{
+    text-align: center;
+}
