@@ -173,7 +173,17 @@ document.addEventListener("DOMContentLoaded", () => {
             if (numElegido === numAleatorio) {
                 jugador.incrementarRacha();
                 jugador.calcularPuntaje(4 - intentosRestantes);
-                mensajeResultado.textContent = `¡Correcto! El número era ${numAleatorio}. Puntaje acumulado: ${jugador.puntajeActual}.`;
+                mensajeResultado.textContent = `Puntaje acumulado: ${jugador.puntajeActual}.`;
+                Swal.fire({
+                    title: "Felicitaciones! Acertaste!",
+                    icon: "success",
+                    showClass: {
+                      popup: `animate__animated animate__bounceIn`
+                    },
+                    hideClass: {
+                      popup: `animate__animated animate__bounceOut`
+                    }
+                  });
                 deshabilitarBotones();
                 mostrarBotonesContinuarYFinalizar();
             } else {
@@ -181,7 +191,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (intentosRestantes > 0) {
                     mensajeResultado.textContent = `Incorrecto. Te quedan ${intentosRestantes} intento(s).`;
                 } else {
-                    mensajeResultado.textContent = `Lo siento, no tienes más intentos. El número era ${numAleatorio}.`;
+                    mensajeResultado.textContent = ``;
+                    Swal.fire({
+                        title: "Lo siento, no tienes más intentos.",
+                        icon: "error",
+                        showClass: {
+                          popup: `animate__animated animate__bounceIn`
+                        },
+                        hideClass: {
+                          popup: `animate__animated animate__bounceOut`
+                        }
+                      });
                     jugador.actualizarPuntaje();
                     jugador.actualizarRacha();
                     deshabilitarBotones();
