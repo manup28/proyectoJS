@@ -53,16 +53,30 @@ document.addEventListener("DOMContentLoaded", () => {
     let jugador;
 
     // Seleccionar elementos del DOM
-    let buttons = document.querySelectorAll(".botonNumero");
-    let mensajeResultado = document.getElementById("mensajeResultado");
-    let formJugador = document.getElementById("formJugador");
-    let inputNombreJugador = document.getElementById("nombreJugador");
-    let botonReiniciar = document.getElementById("botonReiniciar");
-    let botonContinuar = document.getElementById("botonContinuar");
-    let botonFinalizar = document.getElementById("botonFinalizar");
+    const buttons = document.querySelectorAll(".botonNumero");
+    const mensajeResultado = document.getElementById("mensajeResultado");
+    const formJugador = document.getElementById("formJugador");
+    const inputNombreJugador = document.getElementById("nombreJugador");
+    const botonReiniciar = document.getElementById("botonReiniciar");
+    const botonContinuar = document.getElementById("botonContinuar");
+    const botonFinalizar = document.getElementById("botonFinalizar");
+    const jugadorActualDiv = document.getElementById("jugadorActual");
+    const nombreJugadorActualSpan = document.getElementById("nombreJugadorActual");
+    const botonDesloguear = document.getElementById("botonDesloguear");
 
-    // Deshabilitar los botones inicialmente
-    deshabilitarBotones();
+    // Verificar si hay un jugador guardado en localStorage
+    const jugadorGuardado = localStorage.getItem('jugadorActual');
+    if (jugadorGuardado) {
+        const nombreJugador = jugadorGuardado;
+        jugador = listaJugadores.find(j => j.nombre === nombreJugador);
+        if (!jugador) {
+            jugador = new Jugador(nombreJugador);
+            listaJugadores.push(jugador);
+        }
+        iniciarSesionJugador(nombreJugador);
+    } else {
+        deshabilitarBotones();
+    }
 
     formJugador.addEventListener("submit", (event) => {
         event.preventDefault();
@@ -72,6 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
     botonReiniciar.addEventListener("click", reiniciarJuego);
     botonContinuar.addEventListener("click", continuarJuego);
     botonFinalizar.addEventListener("click", finalizarJuego);
+    botonDesloguear.addEventListener("click", desloguearJugador);
 
     // Función para iniciar el juego
     function iniciarJuego() {
@@ -87,7 +102,15 @@ document.addEventListener("DOMContentLoaded", () => {
             listaJugadores.push(jugador);
         }
 
+        // Guardar el nombre del jugador en localStorage
+        localStorage.setItem('jugadorActual', nombreJugador);
+        iniciarSesionJugador(nombreJugador);
+    }
+
+    function iniciarSesionJugador(nombreJugador) {
+        nombreJugadorActualSpan.textContent = nombreJugador;
         formJugador.style.display = 'none';
+        jugadorActualDiv.style.display = 'block';
         jugador.reiniciarPuntajeYRacha();
         generarNumeroAleatorio();
         reiniciarIntentos();
@@ -122,6 +145,16 @@ document.addEventListener("DOMContentLoaded", () => {
         mostrarTablaPuntajes();
         ocultarBotonesAccion();
         botonReiniciar.style.display = 'block';
+    }
+
+    // Función para desloguear al jugador
+    function desloguearJugador() {
+        localStorage.removeItem('jugadorActual');
+        formJugador.style.display = 'block';
+        jugadorActualDiv.style.display = 'none';
+        deshabilitarBotones();
+        mensajeResultado.textContent = '';
+        inputNombreJugador.value = '';
     }
 
     // Función para generar un número aleatorio entre 1 y 9
@@ -191,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (intentosRestantes > 0) {
                     mensajeResultado.textContent = `Incorrecto. Te quedan ${intentosRestantes} intento(s).`;
                 } else {
-                    mensajeResultado.textContent = ``;
+                    mensajeResultado.textContent = `El número era ${numAleatorio}.`;
                     Swal.fire({
                         title: "Lo siento, no tienes más intentos.",
                         icon: "error",
