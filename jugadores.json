@@ -1,0 +1,17 @@
+[
+        {
+            "nombre": "Pedro",
+            "puntajeMaximo": 1,
+            "rachaMaxima": 1
+        },
+        {
+            "nombre": "Marta",
+            "puntajeMaximo": 13,
+            "rachaMaxima": 3
+        },
+        {
+            "nombre": "Clara",
+            "puntajeMaximo": 10,
+            "rachaMaxima": 2
+        }
+    ]

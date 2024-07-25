@@ -40,12 +40,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Lista de jugadores predefinidos
-    let listaJugadores = [
-        new Jugador('Pedro', 1, 1),
-        new Jugador('Marta', 13, 3),
-        new Jugador('Clara', 10, 2)
-    ];
+    // Lista de jugadores inicialmente vacía
+    let listaJugadores = [];
 
     // Variables del juego
     let numAleatorio;
@@ -64,19 +60,49 @@ document.addEventListener("DOMContentLoaded", () => {
     const nombreJugadorActualSpan = document.getElementById("nombreJugadorActual");
     const botonDesloguear = document.getElementById("botonDesloguear");
 
-    // Verificar si hay un jugador guardado en localStorage
-    const jugadorGuardado = localStorage.getItem('jugadorActual');
-    if (jugadorGuardado) {
-        const nombreJugador = jugadorGuardado;
-        jugador = listaJugadores.find(j => j.nombre === nombreJugador);
-        if (!jugador) {
-            jugador = new Jugador(nombreJugador);
-            listaJugadores.push(jugador);
-        }
-        iniciarSesionJugador(nombreJugador);
-    } else {
-        deshabilitarBotones();
+    // Función para cargar los jugadores desde un archivo JSON
+    function cargarJugadores() {
+        return new Promise((resolve, reject) => {
+            fetch('jugadores.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error al cargar el archivo JSON');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        listaJugadores = data.map(j => new Jugador(j.nombre, j.puntajeMaximo, j.rachaMaxima));
+                    }
+                    resolve();
+                })
+                .catch(error => {
+                    console.error('Error al cargar la lista de jugadores:', error);
+                    reject('Error al cargar la lista de jugadores');
+                });
+        });
     }
+
+    // Verificar si hay un jugador guardado en localStorage y cargar jugadores desde JSON
+    cargarJugadores().then(() => {
+        const jugadorGuardado = localStorage.getItem('jugadorActual');
+        if (jugadorGuardado) {
+            const nombreJugador = jugadorGuardado;
+            jugador = listaJugadores.find(j => j.nombre === nombreJugador);
+            if (!jugador) {
+                jugador = new Jugador(nombreJugador);
+                listaJugadores.push(jugador);
+            }
+            iniciarSesionJugador(nombreJugador);
+        } else {
+            deshabilitarBotones();
+        }
+        // Mostrar tabla de puntajes inicial
+        mostrarTablaPuntajes();
+    }).catch(error => {
+        console.error('Error al iniciar el juego:', error);
+        deshabilitarBotones();
+    });
 
     formJugador.addEventListener("submit", (event) => {
         event.preventDefault();
@@ -270,7 +296,4 @@ document.addEventListener("DOMContentLoaded", () => {
             handleButtonClick(numElegido);
         });
     });
-
-    // Mostrar tabla de puntajes inicial
-    mostrarTablaPuntajes();
 });
